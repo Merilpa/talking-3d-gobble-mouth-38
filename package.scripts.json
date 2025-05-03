@@ -1,4 +1,5 @@
 
 {
-  "build:standalone": "vite build --config vite.standalone.config.ts && node scripts/prepare-standalone-package.js"
+  "build:standalone": "vite build --config vite.standalone.config.ts && node scripts/prepare-standalone-package.js",
+  "build:robot-zip": "vite build --config vite.standalone.config.ts && node scripts/prepare-standalone-package.js"
 }

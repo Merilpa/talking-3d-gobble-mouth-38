@@ -1,11 +1,14 @@
 
 const fs = require('fs');
 const path = require('path');
+const archiver = require('archiver');
 
 // Directories
 const DIST_DIR = path.join(__dirname, '../standalone-dist');
 const PACKAGE_DIR = path.join(__dirname, '../robot-package');
 const ASSETS_DIR = path.join(PACKAGE_DIR, 'robot-assets');
+
+console.log('Starting standalone package preparation...');
 
 // Create directories
 if (!fs.existsSync(PACKAGE_DIR)) {
@@ -17,6 +20,7 @@ if (!fs.existsSync(ASSETS_DIR)) {
 }
 
 // Copy built files to assets directory
+console.log('Copying built files to assets directory...');
 fs.readdirSync(DIST_DIR).forEach(file => {
   fs.copyFileSync(
     path.join(DIST_DIR, file),
@@ -25,73 +29,77 @@ fs.readdirSync(DIST_DIR).forEach(file => {
 });
 
 // Copy the example HTML file
+console.log('Creating example HTML file...');
 const exampleHtml = fs.readFileSync(path.join(__dirname, '../src/export.html'), 'utf8');
 fs.writeFileSync(path.join(PACKAGE_DIR, 'index.html'), exampleHtml);
 
 // Create README file
-const readmeContent = `# Talking Robot Widget
+const readmeContent = `# Robot Parlante 3D
 
-This package contains everything you need to add a talking 3D robot to your website.
+Questo pacchetto contiene tutto il necessario per aggiungere un robot parlante 3D al tuo sito web.
 
-## Quick Setup
+## Installazione Rapida
 
-1. Extract this ZIP file to your project.
-2. Copy the \`robot-assets\` folder to your website directory.
-3. Add this code to your HTML:
+1. Estrai questo file ZIP nella directory del tuo sito web.
+2. Assicurati che la cartella \`robot-assets\` sia accessibile dal tuo sito web.
+3. Aggiungi questo codice al tuo HTML:
 
 \`\`\`html
-<!-- In the <head> section -->
+<!-- Nel tag <head> -->
 <link rel="stylesheet" href="robot-assets/talking-robot.css">
 
-<!-- In the <body> section -->
+<!-- Nel corpo della pagina -->
 <div id="robot-container" style="width: 100%; height: 500px;"></div>
 
-<!-- Before the closing </body> tag -->
+<!-- Prima del tag </body> di chiusura -->
 <script src="robot-assets/talking-robot.umd.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Initialize the robot
+    // Inizializza il robot
     const robotApi = window.InitTalkingRobot('robot-container');
     
-    // Optional: Control the robot programmatically
-    // robotApi.speak('Hello world!', 'it-IT');
+    // Opzionale: Controlla il robot con JavaScript
+    // robotApi.speak('Ciao mondo!', 'it-IT');
   });
 </script>
 \`\`\`
 
 ## API
 
-- \`window.InitTalkingRobot(containerId)\` - Initialize the robot in the specified container
-- \`robotApi.speak(text, language)\` - Make the robot speak the given text
-  - Supported languages: 'it-IT' (Italian), 'fr-FR' (French), 'de-DE' (German), 'es-ES' (Spanish)
+- \`window.InitTalkingRobot(containerId)\` - Inizializza il robot nel contenitore specificato
+- \`robotApi.speak(text, language)\` - Fa parlare il robot con il testo fornito
+  - Lingue supportate: 'it-IT' (Italiano), 'fr-FR' (Francese), 'de-DE' (Tedesco), 'es-ES' (Spagnolo)
 
-## Example
+## Esempio
 
-See the included \`index.html\` file for a complete working example.
+Vedi il file \`index.html\` incluso per un esempio completo e funzionante.
 `;
 
 fs.writeFileSync(path.join(PACKAGE_DIR, 'README.md'), readmeContent);
 
-// Create a zip creation script (will need to be run separately)
-const zipScriptContent = `
-// To create a ZIP file, you can use a tool like JSZip or the native Node.js zlib
-// This is just a placeholder - you would run this after building the standalone package
+// Create zip file from the package directory
+console.log('Creating ZIP file...');
+const output = fs.createWriteStream(path.join(__dirname, '../robot-package.zip'));
+const archive = archiver('zip', {
+  zlib: { level: 9 } // Max compression
+});
 
-/*
-const { zip } = require('zip-a-folder');
+// Listen for all archive data to be written
+output.on('close', function() {
+  console.log(`Standalone package created successfully! (${archive.pointer()} total bytes)`);
+  console.log('ZIP file available at: robot-package.zip');
+});
 
-(async () => {
-  await zip('./robot-package', './robot-package.zip');
-  console.log('Package has been zipped successfully!');
-})();
-*/
+// Archive any errors
+archive.on('error', function(err) {
+  throw err;
+});
 
-console.log('Standalone package created successfully!');
-console.log('You can find it in the robot-package directory.');
-console.log('To create a ZIP file, use a ZIP utility to compress the robot-package folder.');
-`;
+// Pipe archive data to the file
+archive.pipe(output);
 
-fs.writeFileSync(path.join(__dirname, 'create-zip.js'), zipScriptContent);
+// Append files from the robot-package directory
+archive.directory(PACKAGE_DIR, 'robot-package');
 
-console.log('Standalone package prepared successfully!');
-console.log('You can find it in the robot-package directory.');
+// Finalize the archive
+archive.finalize();

@@ -15,10 +15,21 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        assetFileNames: 'talking-robot.[ext]'
+        assetFileNames: 'talking-robot.[ext]',
+        // Garantisce che tutti i file necessari siano inclusi
+        manualChunks: undefined,
+        inlineDynamicImports: true
       }
     },
-    cssCodeSplit: false
+    cssCodeSplit: false,
+    // Assicurati che il build sia self-contained
+    assetsInlineLimit: 0,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: false
+      }
+    }
   },
   resolve: {
     alias: {

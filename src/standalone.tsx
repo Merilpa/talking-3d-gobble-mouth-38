@@ -10,7 +10,7 @@ function StandaloneApp() {
   return (
     <>
       <StandaloneExport />
-      <div className="hidden">
+      <div className="h-screen w-full">
         <TalkingRobot />
       </div>
     </>

@@ -1,18 +1,154 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Talking Robot Widget</title>
+    <title>Robot Parlante 3D</title>
+    <link rel="stylesheet" href="robot-assets/talking-robot.css">
+    <style>
+      body { 
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0; 
+        padding: 20px;
+        background-color: #f5f5f5; 
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      }
+      h1, h2, h3 { color: #333; }
+      .control-panel { 
+        margin-top: 20px;
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      input, select { 
+        padding: 10px; 
+        margin: 5px 0; 
+        width: 100%;
+        max-width: 400px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      button { 
+        background: #4285F4; 
+        color: white; 
+        border: none; 
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      button:hover { background: #3367D6; }
+      #robot-container { 
+        width: 100%; 
+        height: 500px; 
+        border: 1px solid #eee;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 20px;
+      }
+      .instructions {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+      }
+      .code-block {
+        background: #f1f1f1;
+        padding: 15px;
+        border-radius: 4px;
+        overflow-x: auto;
+        font-family: monospace;
+        margin: 15px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Robot Parlante 3D - Demo</h1>
+      <p>Questo esempio mostra come integrare e controllare il robot parlante 3D sul tuo sito web.</p>
+      
+      <div id="robot-container"></div>
+      
+      <div class="control-panel">
+        <h2>Controlli del robot</h2>
+        
+        <div class="form-group">
+          <label for="text-input">Testo da pronunciare:</label>
+          <input type="text" id="text-input" placeholder="Inserisci il testo che il robot deve dire" value="Ciao! Sono il tuo robot parlante 3D.">
+        </div>
+        
+        <div class="form-group">
+          <label for="language-select">Lingua:</label>
+          <select id="language-select">
+            <option value="it-IT">Italiano</option>
+            <option value="fr-FR">Francese</option>
+            <option value="de-DE">Tedesco</option>
+            <option value="es-ES">Spagnolo</option>
+          </select>
+        </div>
+        
+        <button id="speak-button">Fai parlare il robot</button>
+      </div>
+      
+      <div class="instructions">
+        <h2>Istruzioni per l'integrazione</h2>
+        <p>
+          Per integrare questo robot sul tuo sito web, segui questi passaggi:
+        </p>
+        <ol>
+          <li>Carica la cartella <code>robot-assets</code> sul tuo server web</li>
+          <li>Aggiungi i riferimenti ai file CSS e JavaScript nel tuo HTML</li>
+          <li>Crea un elemento contenitore con un ID</li>
+          <li>Inizializza il robot con <code>window.InitTalkingRobot('id-del-contenitore')</code></li>
+        </ol>
+        
+        <h3>Esempio di codice</h3>
+        <div class="code-block">
+          <pre><code>&lt;!-- Nel tag &lt;head&gt; --&gt;
+&lt;link rel="stylesheet" href="robot-assets/talking-robot.css"&gt;
+
+&lt;!-- Nel corpo della pagina --&gt;
+&lt;div id="robot-container" style="width: 100%; height: 500px;"&gt;&lt;/div&gt;
+
+&lt;!-- Prima del tag &lt;/body&gt; di chiusura --&gt;
+&lt;script src="robot-assets/talking-robot.umd.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  document.addEventListener('DOMContentLoaded', function() {
+    // Inizializza il robot
+    const robotApi = window.InitTalkingRobot('robot-container');
+    
+    // Esempio: fai parlare il robot
+    // robotApi.speak('Ciao mondo!', 'it-IT');
+  });
+&lt;/script&gt;</code></pre>
+        </div>
+      </div>
+    </div>
+    
+    <script src="robot-assets/talking-robot.umd.js"></script>
     <script>
-      // This is a placeholder - will be replaced with the actual bundle in the build
       document.addEventListener('DOMContentLoaded', function() {
-        // Initialize the robot when the page loads
+        // Inizializza il robot quando la pagina si carica
         if (window.InitTalkingRobot) {
           const robotApi = window.InitTalkingRobot('robot-container');
           
-          // Example of controlling the robot programmatically
+          // Esempio di controllo del robot con JavaScript
           document.getElementById('speak-button').addEventListener('click', function() {
             const text = document.getElementById('text-input').value;
             const language = document.getElementById('language-select').value;
@@ -23,41 +159,5 @@
         }
       });
     </script>
-    <style>
-      body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
-      .control-panel { margin-top: 20px; }
-      input, select, button { padding: 8px; margin: 5px 0; }
-      button { background: #4285F4; color: white; border: none; cursor: pointer; }
-      button:hover { background: #3367D6; }
-      #robot-container { width: 100%; height: 400px; border: 1px solid #ccc; }
-    </style>
-  </head>
-  <body>
-    <h2>Talking Robot Integration Example</h2>
-    <div id="robot-container"></div>
-    
-    <div class="control-panel">
-      <input type="text" id="text-input" placeholder="Enter text for the robot to say" style="width: 300px;">
-      <select id="language-select">
-        <option value="it-IT">Italian</option>
-        <option value="fr-FR">French</option>
-        <option value="de-DE">German</option>
-        <option value="es-ES">Spanish</option>
-      </select>
-      <button id="speak-button">Make Robot Speak</button>
-    </div>
-    
-    <div class="instructions">
-      <h3>Integration Instructions</h3>
-      <p>
-        To integrate this robot on your website:
-      </p>
-      <ol>
-        <li>Copy the <code>robot-assets</code> folder to your website</li>
-        <li>Add references to the CSS and JS files in your HTML</li>
-        <li>Create a container element with an ID</li>
-        <li>Initialize the robot with <code>window.InitTalkingRobot('your-container-id')</code></li>
-      </ol>
-    </div>
   </body>
 </html>
