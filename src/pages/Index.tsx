@@ -3,6 +3,9 @@ import { useState, useRef, useEffect } from 'react';
 import TalkingRobot from '../components/TalkingRobot';
 import RobotAPI from '../components/RobotAPI';
 import { useToast } from '@/components/ui/use-toast';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+import ExportButton from '@/components/ExportButton';
 
 const Index = () => {
   const [text, setText] = useState('Ciao, sono un robot parlante!');
@@ -41,12 +44,23 @@ const Index = () => {
           <p className="text-muted-foreground">
             Un robot 3D che parla il testo che gli fornisci
           </p>
-          <button 
-            onClick={showIntegrationHelp}
-            className="mt-2 text-sm text-primary underline"
-          >
-            Come integrare nel mio sito?
-          </button>
+          <div className="mt-4 flex justify-center gap-4">
+            <Button 
+              onClick={showIntegrationHelp}
+              variant="outline"
+              size="sm"
+            >
+              Come integrare?
+            </Button>
+            
+            <Link to="/integration">
+              <Button variant="outline" size="sm">
+                Guida dettagliata
+              </Button>
+            </Link>
+            
+            <ExportButton />
+          </div>
         </header>
         
         <main className="mb-8">
