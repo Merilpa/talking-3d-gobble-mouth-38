@@ -52,13 +52,13 @@ const ExportButton = () => {
             
             <div className="mt-3 p-3 bg-muted rounded-md overflow-x-auto text-xs">
               <pre>{`<!-- Nel tag <head> del tuo HTML -->
-<link rel="stylesheet" href="/percorso/robot-assets/index.css">
+<link rel="stylesheet" href="robot-assets/talking-robot.css">
 
 <!-- Nel punto dove vuoi inserire il robot -->
 <div id="robot-container" style="width: 100%; height: 500px;"></div>
 
 <!-- Prima della chiusura del tag </body> -->
-<script src="/percorso/robot-assets/index.js"></script>
+<script src="robot-assets/talking-robot.umd.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     // Inizializza il robot
@@ -70,12 +70,58 @@ const ExportButton = () => {
 </script>`}</pre>
             </div>
             
-            <p className="mt-3 mb-1">Ricorda di sostituire <code className="bg-muted px-1 rounded">/percorso/</code> con il percorso effettivo dove hai caricato i file sul tuo server.</p>
-            <p className="text-xs text-muted-foreground">Il pacchetto include anche un file README.md con ulteriori dettagli e opzioni di configurazione.</p>
+            <p className="mt-3 mb-1">Importante: Assicurati che i nomi dei file corrispondano esattamente a quelli nella cartella <code className="bg-muted px-1 rounded">robot-assets</code>. Potrebbero essere <code>talking-robot.umd.js</code> e <code>talking-robot.css</code> invece di <code>index.js</code> e <code>index.css</code>.</p>
+            <p className="text-xs text-muted-foreground">Se continui a vedere errori 404, controlla i nomi esatti dei file nella cartella e modifica di conseguenza i percorsi nel codice HTML.</p>
           </div>
         ),
       });
     }, 6000);
+
+    // Aggiungiamo un toast con soluzioni ai problemi comuni
+    setTimeout(() => {
+      toast({
+        title: "Risoluzione di problemi comuni",
+        description: "Se stai riscontrando errori 404 o altri problemi nell'integrazione del robot:",
+        duration: 40000,
+        action: (
+          <div className="mt-2 text-sm">
+            <p className="mb-2 font-medium">Problemi comuni e soluzioni:</p>
+            <ol className="list-decimal pl-5 space-y-2">
+              <li>
+                <strong>Errori 404 per i file JS/CSS:</strong>
+                <ul className="list-disc pl-5 mt-1">
+                  <li>Verifica che i nomi dei file corrispondano esattamente a quelli nella cartella <code>robot-assets</code></li>
+                  <li>Prova ad usare percorsi assoluti (es. <code>https://tuosito.com/robot-assets/talking-robot.umd.js</code>)</li>
+                  <li>Controlla che la cartella <code>robot-assets</code> sia accessibile dal tuo server web</li>
+                </ul>
+              </li>
+              <li>
+                <strong>Errore 404 per manifest.json:</strong>
+                <ul className="list-disc pl-5 mt-1">
+                  <li>Questo non è necessario per il robot, puoi ignorarlo</li>
+                  <li>Se il problema persiste, aggiungi un file vuoto <code>manifest.json</code> nella cartella principale</li>
+                </ul>
+              </li>
+              <li>
+                <strong>Robot non visibile:</strong>
+                <ul className="list-disc pl-5 mt-1">
+                  <li>Assicurati che il container abbia una larghezza e altezza definite (es. <code>height: 500px</code>)</li>
+                  <li>Verifica che non ci siano errori nella console del browser</li>
+                </ul>
+              </li>
+              <li>
+                <strong>Errori di caricamento Three.js:</strong>
+                <ul className="list-disc pl-5 mt-1">
+                  <li>Assicurati che tutti i file nella cartella <code>robot-assets</code> siano stati caricati</li>
+                  <li>Potrebbe essere necessario aggiungere <code>crossorigin="anonymous"</code> ai tag script</li>
+                </ul>
+              </li>
+            </ol>
+            <p className="mt-3 text-xs text-muted-foreground">Nota: Il robot utilizza Three.js che richiede un server web funzionante. Non funzionerà aprendo semplicemente il file HTML in locale.</p>
+          </div>
+        ),
+      });
+    }, 12000);
   };
   
   return (
