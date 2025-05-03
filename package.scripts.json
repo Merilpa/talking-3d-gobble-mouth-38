@@ -1,0 +1,4 @@
+
+{
+  "build:standalone": "vite build --config vite.standalone.config.ts && node scripts/prepare-standalone-package.js"
+}

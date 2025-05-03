@@ -1,5 +1,6 @@
 
 import { useEffect } from 'react';
+import { createRoot } from 'react-dom/client';
 import TalkingRobot from './TalkingRobot';
 
 // This component helps create a standalone version that can be used without React
@@ -13,12 +14,27 @@ const StandaloneExport = () => {
         return;
       }
       
-      // Mount the robot to the specified container
-      // This would need React to be available in the global scope
-      // In a real implementation, you'd bundle React with the exported file
-      
-      console.log(`Robot initialized in container: ${containerId}`);
+      // Create a React root and render the TalkingRobot component
+      try {
+        const root = createRoot(container);
+        root.render(<TalkingRobot />);
+        console.log(`Robot successfully initialized in container: ${containerId}`);
+        
+        // Return an API object for controlling the robot
+        return {
+          speak: (text: string, language?: string) => {
+            if (window.robotAPI) {
+              window.robotAPI.speak(text, language);
+            }
+          }
+        };
+      } catch (error) {
+        console.error('Failed to initialize robot:', error);
+      }
     };
+    
+    // Signal that the robot is ready
+    window.dispatchEvent(new CustomEvent('robot-ready'));
     
     return () => {
       // Clean up global function on unmount
@@ -32,7 +48,9 @@ const StandaloneExport = () => {
 
 declare global {
   interface Window {
-    InitTalkingRobot?: (containerId: string) => void;
+    InitTalkingRobot?: (containerId: string) => {
+      speak: (text: string, language?: string) => void;
+    };
   }
 }
 
