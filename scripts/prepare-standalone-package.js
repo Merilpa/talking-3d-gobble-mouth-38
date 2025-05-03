@@ -34,9 +34,10 @@ const exampleHtml = fs.readFileSync(path.join(__dirname, '../src/export.html'), 
 fs.writeFileSync(path.join(PACKAGE_DIR, 'index.html'), exampleHtml);
 
 // Create README file
-const readmeContent = `# Robot Parlante 3D
+const readmeContent = `# Robot Parlante 3D - Pronto all'uso
 
 Questo pacchetto contiene tutto il necessario per aggiungere un robot parlante 3D al tuo sito web.
+NON RICHIEDE Node.js o altri strumenti di sviluppo.
 
 ## Installazione Rapida
 
@@ -64,15 +65,16 @@ Questo pacchetto contiene tutto il necessario per aggiungere un robot parlante 3
 </script>
 \`\`\`
 
-## API
+## API JavaScript
 
-- \`window.InitTalkingRobot(containerId)\` - Inizializza il robot nel contenitore specificato
+- \`window.InitTalkingRobot(containerId)\` - Inizializza il robot nel contenitore specificato e restituisce un oggetto API
 - \`robotApi.speak(text, language)\` - Fa parlare il robot con il testo fornito
   - Lingue supportate: 'it-IT' (Italiano), 'fr-FR' (Francese), 'de-DE' (Tedesco), 'es-ES' (Spagnolo)
 
-## Esempio
+## Esempio Completo
 
-Vedi il file \`index.html\` incluso per un esempio completo e funzionante.
+Vedi il file \`index.html\` incluso in questo pacchetto per un esempio completo e funzionante.
+Apri questo file nel browser per vedere subito il robot in azione!
 `;
 
 fs.writeFileSync(path.join(PACKAGE_DIR, 'README.md'), readmeContent);
@@ -98,8 +100,8 @@ archive.on('error', function(err) {
 // Pipe archive data to the file
 archive.pipe(output);
 
-// Append files from the robot-package directory
-archive.directory(PACKAGE_DIR, 'robot-package');
+// Append files from the robot-package directory without the root folder name
+archive.directory(PACKAGE_DIR, false);
 
 // Finalize the archive
 archive.finalize();

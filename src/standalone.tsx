@@ -26,5 +26,50 @@ if (document.getElementById('talking-robot-root')) {
   );
 }
 
-// Export the initialization function and components
-export { TalkingRobot, StandaloneExport };
+// Initialize function for websites
+window.InitTalkingRobot = (containerId) => {
+  const container = document.getElementById(containerId);
+  if (!container) {
+    console.error(`Container with ID '${containerId}' not found`);
+    return null;
+  }
+  
+  try {
+    const root = createRoot(container);
+    root.render(<TalkingRobot />);
+    console.log(`Robot successfully initialized in container: ${containerId}`);
+    
+    // Return an API object for controlling the robot
+    return {
+      speak: (text, language) => {
+        if (window.robotAPI) {
+          window.robotAPI.speak(text, language);
+        }
+      }
+    };
+  } catch (error) {
+    console.error('Failed to initialize robot:', error);
+    return null;
+  }
+};
+
+// Export for module usage
+export { TalkingRobot };
+export type { InitTalkingRobot };
+
+// Type definition
+interface InitTalkingRobot {
+  (containerId: string): {
+    speak: (text: string, language?: string) => void;
+  } | null;
+}
+
+// Add to global window object
+declare global {
+  interface Window {
+    InitTalkingRobot: InitTalkingRobot;
+    robotAPI?: {
+      speak: (text: string, language?: string) => void;
+    };
+  }
+}
