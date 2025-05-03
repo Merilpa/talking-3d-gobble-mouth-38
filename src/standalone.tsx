@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import TalkingRobot from './components/TalkingRobot';
 import StandaloneExport from './components/StandaloneExport';
+import './types/robot';  // Import the type definitions
 
 // Standalone entry point that bundles the robot and its dependencies
 function StandaloneApp() {
@@ -55,21 +56,5 @@ window.InitTalkingRobot = (containerId) => {
 
 // Export for module usage
 export { TalkingRobot };
-export type { InitTalkingRobot };
 
-// Type definition
-interface InitTalkingRobot {
-  (containerId: string): {
-    speak: (text: string, language?: string) => void;
-  } | null;
-}
-
-// Add to global window object
-declare global {
-  interface Window {
-    InitTalkingRobot: InitTalkingRobot;
-    robotAPI?: {
-      speak: (text: string, language?: string) => void;
-    };
-  }
-}
+// Type definitions are now imported from the shared robot.d.ts file

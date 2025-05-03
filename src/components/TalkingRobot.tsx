@@ -54,7 +54,7 @@ const TalkingRobot = () => {
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                   placeholder="Inserisci il testo che il robot deve pronunciare..."
-                  className="w-full h-24 p-3 rounded-lg bg-background/80 backdrop-blur-sm border border-border"
+                  className="w-full h-24 p-3 rounded-lg bg-background/80 backdrop-blur-sm border border-border text-white"
                 />
               </div>
               
@@ -62,7 +62,7 @@ const TalkingRobot = () => {
                 <select
                   value={language}
                   onChange={(e) => setLanguage(e.target.value)}
-                  className="p-3 rounded-lg bg-background/80 backdrop-blur-sm border border-border"
+                  className="p-3 rounded-lg bg-background/80 backdrop-blur-sm border border-border text-white"
                 >
                   <option value="it-IT">Italiano</option>
                   <option value="fr-FR">Francese</option>
