@@ -9,37 +9,31 @@ const ExportButton = () => {
   
   const handleExport = async () => {
     toast({
-      title: "Preparazione esportazione",
-      description: "Sto preparando i file del robot...",
-      duration: 3000,
+      title: "Informazioni sull'esportazione",
+      description: "Per ottenere un pacchetto ZIP funzionante, segui le istruzioni...",
+      duration: 5000,
     });
     
-    // In un'applicazione reale, qui genereremmo il pacchetto
-    // Poiché non possiamo farlo direttamente nel browser, mostriamo le istruzioni
+    // Mostra istruzioni dettagliate dopo un breve ritardo
     setTimeout(() => {
       toast({
-        title: "Esportazione pronta",
-        description: "Scarica il pacchetto del robot cliccando il pulsante qui sotto",
-        duration: 10000,
+        title: "Come esportare il robot",
+        description: "Per ottenere un pacchetto ZIP funzionante del robot, esegui questi passaggi nel tuo terminale:",
+        duration: 20000,
         action: (
-          <a 
-            href="/robot-package.zip" 
-            download="robot-parlante.zip"
-            style={{
-              display: "inline-block",
-              padding: "0.5rem 1rem",
-              backgroundColor: "hsl(var(--primary))",
-              color: "white",
-              borderRadius: "0.375rem",
-              textDecoration: "none",
-              marginTop: "0.5rem"
-            }}
-          >
-            Scarica ZIP
-          </a>
+          <div className="mt-2 text-sm">
+            <p className="mb-2 font-medium">Passaggi:</p>
+            <ol className="list-decimal pl-5 space-y-1">
+              <li>Clona il repository: <code className="bg-muted px-1 rounded">git clone [URL-REPOSITORY]</code></li>
+              <li>Installa le dipendenze: <code className="bg-muted px-1 rounded">npm install</code></li>
+              <li>Esegui il comando: <code className="bg-muted px-1 rounded">npm run build:robot-zip</code></li>
+              <li>Troverai il file <code className="bg-muted px-1 rounded">robot-package.zip</code> nella cartella principale</li>
+            </ol>
+            <p className="mt-3 text-xs text-muted-foreground">Nota: Il download diretto dal browser potrebbe creare ZIP corrotti a causa delle limitazioni del browser stesso.</p>
+          </div>
         ),
       });
-    }, 1500);
+    }, 1000);
   };
   
   return (
