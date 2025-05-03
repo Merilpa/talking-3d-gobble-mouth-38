@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import TalkingRobot from './TalkingRobot';
+import '../types/robot'; // Import the type definitions
 
 // This component helps create a standalone version that can be used without React
 const StandaloneExport = () => {
@@ -11,7 +12,7 @@ const StandaloneExport = () => {
       const container = document.getElementById(containerId);
       if (!container) {
         console.error(`Container with ID '${containerId}' not found`);
-        return;
+        return null;
       }
       
       // Create a React root and render the TalkingRobot component
@@ -30,6 +31,7 @@ const StandaloneExport = () => {
         };
       } catch (error) {
         console.error('Failed to initialize robot:', error);
+        return null;
       }
     };
     
@@ -45,13 +47,5 @@ const StandaloneExport = () => {
   // This component doesn't render anything visible
   return null;
 };
-
-declare global {
-  interface Window {
-    InitTalkingRobot?: (containerId: string) => {
-      speak: (text: string, language?: string) => void;
-    };
-  }
-}
 
 export default StandaloneExport;
